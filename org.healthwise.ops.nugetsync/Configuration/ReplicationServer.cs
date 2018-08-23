@@ -4,6 +4,9 @@ namespace org.healthwise.ops.nugetsync.Configuration
 {
     public class ReplicationServer
     {
+        [JsonProperty("provider")]
+        public string Provider { get; set; }
+
         [JsonProperty("url")]
         public string Url { get; set; }
         

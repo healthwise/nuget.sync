@@ -15,5 +15,6 @@ namespace org.healthwise.ops.nugetsync.Configuration
         
         [JsonProperty("destination")]
         public ReplicationServer Destination { get; set; }
+
     }
 }
