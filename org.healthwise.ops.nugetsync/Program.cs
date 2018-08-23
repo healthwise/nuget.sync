@@ -59,7 +59,7 @@ namespace org.healthwise.ops.nugetsync
                     case "nuget":
                         replicator = new Replicator(
                             providerFactory.LoadProvider(replicationPair.Source.Provider,replicationPair.Source.Url, replicationPair.Source.Token, replicationPair.Source.Username, replicationPair.Source.Password),
-                            providerFactory.LoadProvider(replicationPair.Source.Provider,replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
+                            providerFactory.LoadProvider(replicationPair.Destination.Provider,replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
                         break;
                     default:
                         Log.Logger.Error("Unknown type {type} for replication pair {description}.", replicationPair.Type, replicationPair.Description);
