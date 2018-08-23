@@ -70,3 +70,6 @@ By default the application will look for a `config.json` file in the same direct
 ```
 dotnet org.healthwise.ops.nugetsync.dll -c myotherconfig.json
 ```
+
+## Logging
+Output will be logged to the directory containing the `org.healthwise.ops.nugetsync.dll` file named `log-<timestamp>.txt`.  By default a new log file will be created each day, up to 7 files in total.  Older files will then be removed from the directory.
