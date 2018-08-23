@@ -200,11 +200,10 @@ namespace org.healthwise.ops.nugetsync.Providers
 
                              returnValue.Add(packageDefinition);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             var output = String.Concat(propertiesElement.Nodes().Select(x => x.ToString()).ToArray());
                             Log.Logger.Error(output);
-                            //throw ex;
                         }
                     }
                 }
