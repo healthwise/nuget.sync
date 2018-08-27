@@ -4,12 +4,14 @@
       "description": "Replicate Powershell Feeds From ProGet To MyGet",
       "type": "nuget",
       "source": {
+        "provider": "proget", 
         "url": "http://nuget.healthwise.org/nuget/Powershell/",
         "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_PROGET",
         "username": "USER_NAME_WITH_READ_ACCESS_TO_PROGET",
         "password": "PASSWORD_FOR_USER_NAME_WITH_READ_ACCESS_TO_PROGET"
       },
       "destination": {
+        "provider": "myget",
         "url": "https://healthwise.myget.org/F/powershellmodules/api/v2",
         "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_MYGET",
         "username": "USER_NAME_WITH_READ_ACCESS_TO_MYGET",
@@ -20,12 +22,14 @@
       "description": "Replicate Healthwise Feeds From ProGet To MyGet",
       "type": "nuget",
       "source": {
+        "provider": "proget",
         "url": "http://nuget.healthwise.org/nuget/Healthwise/",
         "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_PROGET",
         "username": "USER_NAME_WITH_READ_ACCESS_TO_PROGET",
         "password": "PASSWORD_FOR_USER_NAME_WITH_READ_ACCESS_TO_PROGET"
       },
       "destination": {
+        "provider": "myget",
         "url": "https://healthwise.myget.org/F/healthwise/api/v2",
         "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_MYGET",
         "username": "USER_NAME_WITH_READ_ACCESS_TO_MYGET",

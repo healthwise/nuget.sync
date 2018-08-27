@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
 using org.healthwise.ops.nugetsync.Configuration;
 using org.healthwise.ops.nugetsync.Providers;
 using Newtonsoft.Json;
@@ -11,7 +12,12 @@ namespace org.healthwise.ops.nugetsync
     // TODO: Retries on HTTP calls
     class Program
     {
-        public static async Task Main(string[] args)
+        public static Task<int> Main(string[] args) => CommandLineApplication.ExecuteAsync<Program>(args);
+
+        [Option(Description = "Config File", ShortName = "c")]
+        public string ConfigFile { get; }
+
+        private async Task OnExecuteAsync()
         {
             // Setup logging
             Log.Logger = new LoggerConfiguration()
@@ -25,14 +31,15 @@ namespace org.healthwise.ops.nugetsync
             Log.Logger.Information("Loading configuration...");
 
             var configFile = "config.json";
-            if (args.Length > 3)
+            if (!string.IsNullOrEmpty(ConfigFile))
             {
-                configFile = args[2];
-                if (!File.Exists(configFile))
+                if (!File.Exists(ConfigFile))
                 {
-                    Log.Logger.Error($"File {configFile} Does Not Exist");
+                    Log.Logger.Error($"File {ConfigFile} Does Not Exist");
                     return;
                 }
+
+                configFile = ConfigFile;
             }
 
             var configuration = JsonConvert.DeserializeObject<ReplicationConfiguration>(
@@ -41,6 +48,7 @@ namespace org.healthwise.ops.nugetsync
             
             // Start replication tasks
             Log.Logger.Information("Starting replication tasks...");
+            INuGetProviderFactory providerFactory = new NuGetProviderFactory();
             foreach (var replicationPair in configuration.ReplicationPairs)
             {
                 // Build replicator
@@ -50,8 +58,8 @@ namespace org.healthwise.ops.nugetsync
                 {
                     case "nuget":
                         replicator = new Replicator(
-                            new ProGetPackageProvider(replicationPair.Source.Url, replicationPair.Source.Token, replicationPair.Source.Username, replicationPair.Source.Password), 
-                            new MyGetPackageProvider(replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
+                            providerFactory.LoadProvider(replicationPair.Source.Provider,replicationPair.Source.Url, replicationPair.Source.Token, replicationPair.Source.Username, replicationPair.Source.Password),
+                            providerFactory.LoadProvider(replicationPair.Destination.Provider,replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
                         break;
                     default:
                         Log.Logger.Error("Unknown type {type} for replication pair {description}.", replicationPair.Type, replicationPair.Description);
