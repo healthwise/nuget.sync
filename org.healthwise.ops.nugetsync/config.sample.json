@@ -4,7 +4,7 @@
       "description": "Replicate Powershell Feeds From ProGet To MyGet",
       "type": "nuget",
       "source": {
-        "provider": "proget", 
+        "provider": "proget",
         "url": "http://nuget.healthwise.org/nuget/Powershell/",
         "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_PROGET",
         "username": "USER_NAME_WITH_READ_ACCESS_TO_PROGET",
@@ -36,5 +36,14 @@
         "password": "PASSWORD_FOR_USER_NAME_WITH_READ_ACCESS_TO_MYGET"
       }
     }
-  ]
+  ],
+  "messageSettings": 
+    {
+      "FunctionKey": "FUNCTION_KEY",
+      "ServiceURL": "SERVICE_URL",
+      "ChannelData": {
+        "TEAMS_CHANNEL_ID": "CHANNEL_ID"
+      },
+        "Environment": "ENVIRONMENT"
+      }
 }

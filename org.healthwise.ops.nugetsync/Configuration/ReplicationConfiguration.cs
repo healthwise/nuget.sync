@@ -12,5 +12,8 @@ namespace org.healthwise.ops.nugetsync.Configuration
         
         [JsonProperty("replicationPairs")]
         public List<ReplicationPair> ReplicationPairs { get; set; }
+
+        [JsonProperty("messageSettings")]
+        public MessageSetting MessageSetting { get; set; }
     }
 }

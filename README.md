@@ -5,7 +5,7 @@ This is a console application that syncronizes the contents of one NuGet feed wi
 .NET Core 2.0 and above.
 
 ## Configuration
-The application uses a json file to configure syncronization settings.  The json file is in the following format:
+The application uses a json file to configure syncronization and chatbot settings.  The json file is in the following format:
 ```
 {
   "replicationPairs": [
@@ -27,7 +27,14 @@ The application uses a json file to configure syncronization settings.  The json
         "password": "PASSWORD_FOR_USER_NAME_WITH_READ_ACCESS_TO_MYGET"
       }
     }
-  ]
+  ],
+    "messageSettings": 
+    {
+      "FunctionKey": "FUNCTION_KEY",
+      "ServiceURL": "https://smba.trafficmanager.net/amer/",
+      "ChannelData": "CHANNEL_ID",
+      "Environment":  "Dev"
+    }
 }
 ```
 
@@ -57,6 +64,22 @@ User with read access to a feed.
 
 **Password**
 Password associated with the *Username* item.
+
+**MessageSettings**
+Describes the properties necessary to send messages to a chat bot service
+
+**FunctionKey**
+A function key used to trigger the function with. Keys can be found/created under the 'Manage' blade in the Message Proxy function in the Azure Portal. A new key should be created for each instance where a key will be stored (Azure Key Vault, Azure Automation, etc...)
+
+**ServiceURL**
+The URL of the service where messages will be sent
+
+**ChannelData**
+Used to deliver messages to specific teams channels. To get a channel ID from Teams ask Uncle HAB for the Channel ID from that Channel. *Example: @Dev-UncleHAB- what is the channel id?* 
+
+**Environment**
+The environment where the Uncle HAB message proxy function lives. Valid environments are Dev, Test, and Prod.
+
 
 The .NET solution contains a `config.sample.json` file that you can use as a template for configuration.
 
