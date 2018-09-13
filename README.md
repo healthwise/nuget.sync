@@ -80,7 +80,6 @@ Used to deliver messages to specific teams channels. To get a channel ID from Te
 **Environment**
 The environment where the Uncle HAB message proxy function lives. Valid environments are Dev, Test, and Prod.
 
-
 The .NET solution contains a `config.sample.json` file that you can use as a template for configuration.
 
 ## Running
