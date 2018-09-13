@@ -27,12 +27,12 @@ namespace org.healthwise.ops.nugetsync
         // Construct a sink that passes messages to the specificed chat account.
         public void Emit(LogEvent logEvent)
         {
+            // Ensure only Error and Fatal level messages are sent to the sink
             if (logEvent.Level != LogEventLevel.Error && logEvent.Level != LogEventLevel.Fatal)
                 return;
 
             JObject json = JObject.FromObject(new
             {
-                //your properties here
                 type = "message",
                 serviceURL = _ServiceURL,
                 channelData = new {teamsChannelId = _ChannelData},
