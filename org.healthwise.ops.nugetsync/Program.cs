@@ -1,11 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using org.healthwise.ops.nugetsync.Configuration;
 using org.healthwise.ops.nugetsync.Providers;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Events;
+using System.Net;
+using org.healthwise.ops.nugetsync.Sinks;
 
 namespace org.healthwise.ops.nugetsync
 {
@@ -19,17 +21,10 @@ namespace org.healthwise.ops.nugetsync
 
         private async Task OnExecuteAsync()
         {
-            // Setup logging
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.LiterateConsole()
-                .WriteTo.RollingFile("log-{Date}.txt", 
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Message}\r\n{Exception}", retainedFileCountLimit: 7)
-                .CreateLogger();
-            
-            // Load configuration
-            Log.Logger.Information("Loading configuration...");
+            // Force TLS 1.2
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+            // Load configuration
             var configFile = "config.json";
             if (!string.IsNullOrEmpty(ConfigFile))
             {
@@ -41,9 +36,20 @@ namespace org.healthwise.ops.nugetsync
 
                 configFile = ConfigFile;
             }
-
             var configuration = JsonConvert.DeserializeObject<ReplicationConfiguration>(
                 File.ReadAllText(configFile));
+
+            // Setup logging
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.ChatBotSink(functionKey: configuration.MessageSetting.FunctionKey, serviceURL: configuration.MessageSetting.ServiceURL, channelData: configuration.MessageSetting.ChannelData, environment: configuration.MessageSetting.Environment)
+                .WriteTo.LiterateConsole(restrictedToMinimumLevel: LogEventLevel.Information)
+                .WriteTo.RollingFile("log-{Date}.txt", 
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Message}\r\n{Exception}", retainedFileCountLimit: 7)
+                .CreateLogger();
+
+            Log.Logger.Information("Loading configuration...");
+        
             Log.Logger.Information($"Loaded configuration from {configFile}.");
             
             // Start replication tasks
