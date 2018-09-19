@@ -54,8 +54,8 @@ namespace org.healthwise.ops.nugetsync
             
             // Start replication tasks
             Log.Logger.Information("Starting replication tasks...");
-            INuGetProviderFactory providerFactory = new NuGetProviderFactory();
-            INuGetProviderFactory npmProviderFactory = new NpmProviderFactory();
+            IProviderFactory providerFactory = new NuGetProviderFactory();
+            IProviderFactory npmProviderFactory = new NpmProviderFactory();
             foreach (var replicationPair in configuration.ReplicationPairs)
             {
                 // Build replicator
