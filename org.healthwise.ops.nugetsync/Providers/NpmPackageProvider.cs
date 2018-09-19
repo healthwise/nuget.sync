@@ -144,7 +144,7 @@ namespace org.healthwise.ops.nugetsync.Providers
             var content = new StringContent( uploadJson.ToString());
 
             var request = new HttpRequestMessage(HttpMethod.Put, _repositoryUrl + "/" + packageDefinition.PackageIdentifier);
-            if (_providerType.Equals("myget",StringComparison.CurrentCultureIgnoreCase))
+            if (_providerType.Equals("myget", StringComparison.CurrentCultureIgnoreCase))
             { 
                 request.Headers.Add("X-NuGet-ApiKey", _writeToken);
             }
