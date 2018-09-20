@@ -54,7 +54,8 @@ namespace org.healthwise.ops.nugetsync
             
             // Start replication tasks
             Log.Logger.Information("Starting replication tasks...");
-            INuGetProviderFactory providerFactory = new NuGetProviderFactory();
+            IProviderFactory providerFactory = new NuGetProviderFactory();
+            IProviderFactory npmProviderFactory = new NpmProviderFactory();
             foreach (var replicationPair in configuration.ReplicationPairs)
             {
                 // Build replicator
@@ -66,6 +67,11 @@ namespace org.healthwise.ops.nugetsync
                         replicator = new Replicator(
                             providerFactory.LoadProvider(replicationPair.Source.Provider,replicationPair.Source.Url, replicationPair.Source.Token, replicationPair.Source.Username, replicationPair.Source.Password),
                             providerFactory.LoadProvider(replicationPair.Destination.Provider,replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
+                        break;
+                    case "npm":
+                        replicator = new Replicator(
+                            npmProviderFactory.LoadProvider(replicationPair.Source.Provider, replicationPair.Source.Url, replicationPair.Source.Token, replicationPair.Source.Username, replicationPair.Source.Password),
+                            npmProviderFactory.LoadProvider(replicationPair.Destination.Provider, replicationPair.Destination.Url, replicationPair.Destination.Token, replicationPair.Destination.Username, replicationPair.Destination.Password));
                         break;
                     default:
                         Log.Logger.Error("Unknown type {type} for replication pair {description}.", replicationPair.Type, replicationPair.Description);

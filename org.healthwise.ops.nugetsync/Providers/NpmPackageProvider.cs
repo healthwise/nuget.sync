@@ -22,13 +22,15 @@ namespace org.healthwise.ops.nugetsync.Providers
         private readonly string _writeToken;
         private readonly string _readUsername;
         private readonly string _readPassword;
+        private readonly string _providerType;
 
-        public NpmPackageProvider(string repositoryUrl, string writeToken, string readUsername, string readPassword)
+        public NpmPackageProvider(string repositoryUrl, string writeToken, string readUsername, string readPassword, string providerType)
         {
             _repositoryUrl = repositoryUrl.TrimEnd('/');
             _writeToken = writeToken;
             _readUsername = readUsername;
             _readPassword = readPassword;
+            _providerType = providerType;
         }
         
         public async Task<ICollection<PackageDefinition>> GetPackages(DateTime since)
@@ -142,7 +144,14 @@ namespace org.healthwise.ops.nugetsync.Providers
             var content = new StringContent( uploadJson.ToString());
 
             var request = new HttpRequestMessage(HttpMethod.Put, _repositoryUrl + "/" + packageDefinition.PackageIdentifier);
-            request.Headers.Add("X-NuGet-ApiKey", _writeToken);
+            if (_providerType.Equals("myget", StringComparison.CurrentCultureIgnoreCase))
+            { 
+                request.Headers.Add("X-NuGet-ApiKey", _writeToken);
+            }
+            else if (_providerType.Equals("proget", StringComparison.CurrentCultureIgnoreCase))
+            {
+                request.Headers.Add("Authorization", $"Bearer {_writeToken}");
+            }
             request.Content = content;
 
             var response = await HttpClient.SendAsync(request);

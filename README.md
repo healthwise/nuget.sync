@@ -26,6 +26,24 @@ The application uses a json file to configure syncronization and chatbot setting
         "username": "USER_NAME_WITH_READ_ACCESS_TO_MYGET",
         "password": "PASSWORD_FOR_USER_NAME_WITH_READ_ACCESS_TO_MYGET"
       }
+    },
+    {
+      "description": "Replicate NPM Feed From ProGet To MyGet",
+      "type": "npm",
+      "source": {
+        "provider": "proget",
+        "url": "http://nuget.healthwise.org/npm/HealthwiseNPM/",
+        "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_PROGET",
+        "username": "USER_NAME_WITH_READ_ACCESS_TO_PROGET",
+        "password": "TOKEN_WITH_PUSH_CREDENTIALS_TO_PROGET"
+      },
+      "destination": {
+        "provider": "myget",
+        "url": "https://healthwise.myget.org/F/npm/npm/",
+        "token": "TOKEN_WITH_PUSH_CREDENTIALS_TO_MYGET",
+        "username": "USER_NAME_WITH_READ_ACCESS_TO_MYGET",
+        "password": "TOKEN_WITH_PUSH_CREDENTIALS_TO_MYGET"
+      }
     }
   ],
     "messageSettings": 
@@ -42,7 +60,7 @@ The application uses a json file to configure syncronization and chatbot setting
 An array of items that describe a source feed and a destination feed for copying packages.  A minimum of one replication pair is needed.  For syncronizing multiple feeds, multiple replication pairs will be added to the array.
 
 **Type**
-The type of repository to copy.  Can either be *nuget* or *npm*.  The npm functionality is not tested.
+The type of repository to copy.  Can either be *nuget* or *npm*.
 
 **Description**
 User friendly description of the replication pair.  This will be written in the log files.
@@ -54,7 +72,7 @@ Every replication pair needs to have a single *source* object and a single *dest
 The type of NuGet installation used.  Valid values are *proget* and *myget*.
 
 **Url**
-The URL to the NuGet feed to be replicated.  Refer to the provider documentation on the correct formatting of the URL for that provider.  The *config.sample.json* file has sample urls for the ProGet and MyGet providers.
+The URL to the feed to be replicated.  Refer to the provider documentation on the correct formatting of the URL for that provider.  The *config.sample.json* file has sample urls for the ProGet and MyGet providers.
 
 **Token**
 A token with write access to a feed.  For source repositories, the token can be represented by an empty string.  The token must be issued for the same user described in the *Username* / *Password* items.

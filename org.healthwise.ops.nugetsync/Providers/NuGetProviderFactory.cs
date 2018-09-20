@@ -2,7 +2,7 @@ using System;
 
 namespace org.healthwise.ops.nugetsync.Providers
 {
-    public class NuGetProviderFactory: INuGetProviderFactory
+    public class NuGetProviderFactory: IProviderFactory
     {
         public IPackageProvider LoadProvider(string providerType, string repositoryUrl, string writeToken, string readUsername,
             string readPassword)
