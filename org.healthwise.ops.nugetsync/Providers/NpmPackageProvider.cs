@@ -128,6 +128,7 @@ namespace org.healthwise.ops.nugetsync.Providers
             uploadJson.Add(new JProperty("_id", packageDefinition.PackageIdentifier + "@" + packageDefinition.PackageVersion));
             uploadJson.Add(new JProperty("name", packageDefinition.PackageIdentifier));
             uploadJson.Add(new JProperty("version", packageDefinition.PackageVersion));
+            uploadJson.Add(new JProperty("dist-tags", new JObject (new JProperty("latest",packageDefinition.PackageVersion))));
             uploadJson.Add(new JProperty("dist", new JObject(
                 new JProperty("shasum", ""),
                 new JProperty("tarball", $"{_repositoryUrl}/{packageDefinition.PackageIdentifier}/-/{packageDefinition.PackageIdentifier}-{packageDefinition.PackageVersion}.tgz"))));
