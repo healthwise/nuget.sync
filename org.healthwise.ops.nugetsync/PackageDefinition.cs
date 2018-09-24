@@ -8,6 +8,7 @@ namespace org.healthwise.ops.nugetsync
         public string PackageType { get; set; }
         public string PackageIdentifier { get; set; }
         public string PackageVersion { get; set; }
+        public string PackageDistTags { get; set; }
 
         public DateTime LastEdited { get; set; }
 

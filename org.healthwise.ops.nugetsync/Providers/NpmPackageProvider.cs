@@ -69,6 +69,7 @@ namespace org.healthwise.ops.nugetsync.Providers
 
                             var name = packageObject["name"];
                             var version = packageObject["version"];
+                            var disttags = packageObject["dist-tags"];
                             var time = packageObject["time"] as JObject;
                             if (name != null && version != null)
                             {
@@ -77,11 +78,12 @@ namespace org.healthwise.ops.nugetsync.Providers
                                     PackageType = "npm",
                                     PackageIdentifier = name.ToString(),
                                     PackageVersion = version.ToString(),
+                                    PackageDistTags = disttags.ToString(),
                                     LastEdited = time?["modified"] != null ? DateTime.Parse(time["modified"].ToString()) : DateTime.MinValue,
                                     ContentUri = new Uri($"{_repositoryUrl}/{name}/-/{name}-{version}.tgz"),
                                     IsListed = true
                                 };
-                        
+
                                 returnValue.Add(packageDefinition);
                             }
                         }
@@ -122,12 +124,13 @@ namespace org.healthwise.ops.nugetsync.Providers
             {
                 data = Convert.ToBase64String(streamCopy.ToArray());
             }
-            
 
+            JObject disttags = JObject.Parse(packageDefinition.PackageDistTags);
             var uploadJson = new JObject();
             uploadJson.Add(new JProperty("_id", packageDefinition.PackageIdentifier + "@" + packageDefinition.PackageVersion));
             uploadJson.Add(new JProperty("name", packageDefinition.PackageIdentifier));
             uploadJson.Add(new JProperty("version", packageDefinition.PackageVersion));
+            uploadJson.Add(new JProperty("dist-tags", new JObject (disttags)));
             uploadJson.Add(new JProperty("dist", new JObject(
                 new JProperty("shasum", ""),
                 new JProperty("tarball", $"{_repositoryUrl}/{packageDefinition.PackageIdentifier}/-/{packageDefinition.PackageIdentifier}-{packageDefinition.PackageVersion}.tgz"))));
