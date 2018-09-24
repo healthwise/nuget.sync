@@ -83,6 +83,7 @@ namespace org.healthwise.ops.nugetsync.Providers
                                     ContentUri = new Uri($"{_repositoryUrl}/{name}/-/{name}-{version}.tgz"),
                                     IsListed = true
                                 };
+
                                 returnValue.Add(packageDefinition);
                             }
                         }
