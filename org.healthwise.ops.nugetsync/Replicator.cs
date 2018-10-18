@@ -94,7 +94,7 @@ namespace org.healthwise.ops.nugetsync
             }
             catch (Exception ex)
             {
-                Log.Logger.Error($"An Error Occured: {ex.Message}");
+                Log.Logger.Error($"Application: NuGet Sync. Hostname: {System.Environment.MachineName} - An Error Occurred: {ex.Message}");
 
             }
         }
